@@ -87,7 +87,7 @@ func main() {
 	defer db.Close()
 
 	// Создаем таблицу для сообщений, если она не существует
-	_, err = db.Exec("CREATE TABLE IF NOT EXISTS notification (id SERIAL PRIMARY KEY, uuid VARCHAR(36), notification TEXT, read BOOLEAN DEFAULT false, target TEXT, project_id INTEGER)")
+	_, err = db.Exec("CREATE TABLE IF NOT EXISTS notification (id SERIAL PRIMARY KEY, uuid VARCHAR(36), notification TEXT, read BOOLEAN DEFAULT false, target TEXT)")
 	if err != nil {
 		log.Fatalf("Failed to create messages table: %v", err)
 	}
@@ -106,7 +106,7 @@ func main() {
 			uuid := RegistredData.UUID
 			target := "fill_user"
 			// Сохраняем сообщение в базе данных
-			_, err = db.Exec("INSERT INTO notification_registration (uuid, notification, type) VALUES ($1, $2, $3)", uuid, message, target)
+			_, err = db.Exec("INSERT INTO notification_registration (uuid, notification, target) VALUES ($1, $2, $3)", uuid, message, target)
 			if err != nil {
 				log.Fatalf("Failed to insert message into database: %v", err)
 			}
